@@ -1,0 +1,57 @@
+1.a. 
+p ^ ¬p - legal
+¬(q v r) ¬q => ¬¬p - illegal, no binary operator between two tokens on lhs
+(p ^ q) v (p ¬^ q) - illegal, no NAND operator so ¬^ is illegal
+
+1.b.
+i. c ^ ¬b
+ii. a ^ ((b ^ ¬c) v (¬b ^ c))
+iii. ¬d ^ ¬e => f
+
+1.c.
+i. charles is clever => charles has a job
+ii. ¬(making notes every week => passing philosophy)
+iii. 
+
+1.d.
+p <=> q != (p => q) v (q => p)
+
+p	q	p <=> q	p => q	q => p
+T	T	T	T	T
+T	F	F	F	T
+F	T	F	T	F
+F	F	T	T	T
+
+(p => q) v (q => p) is satisfied by both p = T, q = F and p = F, q = T which p <=> q is not satisfied by.
+
+2.a.
+D = 5
+
+3.a.
+i. [lesson1].  - checks if lesson1.pl is loaded or not.
+ii. listing(fruit). - lists all fruit.
+iii. has(jack,X). - sets X to a list containing all atoms jack has, then prints.
+iv. has(jack,_). - queries whether or not jack has an atom
+v. has(X,applies),has(Y,plums) - Lists who has the apple atom and who has the plum atom.
+vi. has(X,Y), not(fruit(Y)). - Lists who has what, excluding who has fruit.
+
+3.b.
+meal(X,_) :- food(X) - a meal is composed of some food X and an additional element.
+meal(X,Y) :- Y is starter([X|A]) and side([A|B]) and drink(B).
+
+3.c.
+food(pizza).
+food(X), meal(X) and lunch(X).
+dinner(sandwich).
+forward chaining.
+
+4.a.
+human(socrates).
+human(plato).
+
+4.b.
+mortal(x) :- human(x).
+
+4.c.
+mortal(socrates).
+mortal(plato).
