@@ -1,0 +1,13 @@
+\begin{thebibliography}{1}
+
+\bibitem{medical}
+Qing Li, Weidong Cai, Xiaogang Wang, Yun Zhou, David~Dagan Feng, and Mei Chen.
+\newblock Medical image classification with convolutional neural network.
+\newblock Technical report, University of Sydney, Australia, 2014.
+
+\bibitem{imagenet}
+Alex Krizhevsky, Ilya Sutskever, and Geoffrey~E. Hinton.
+\newblock Imagenet classification with deep convolutional neural networks.
+\newblock Technical report, University of Toronto, 2017.
+
+\end{thebibliography}
