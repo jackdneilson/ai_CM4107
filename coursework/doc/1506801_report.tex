@@ -7,14 +7,15 @@
 \maketitle
 \newpage
 \section{Introduction}
-Image classification is a difficult problem in computing as it involves the use of fuzzy logic and non-binary comparisons. It is an important problem to solve as it has many uses, from self driving cars recognising other cars on the road to identifying lung abnormalities for diagnosis\cite{medical}. Neural networks are well suited to this task due to their ability to have "shades of grey" when classifying images, and recent advances have allowed image classifying neural networks to achieve error rates as low as 0.3\% in constrained experiments which is approaching the human error rate\cite{imagenet}. This paper will compare two papers which use different methods of image classification using a convolutional neural networks.
+Image classification is a difficult problem in computing as it involves the use of fuzzy logic and non-binary comparisons. It is an important problem to solve as it has many uses, from self driving cars recognising other cars on the road to identifying lung abnormalities for diagnosis\cite{medical}. Neural networks are well suited to this task due to their ability to have "shades of grey" when classifying images, and recent advances have allowed image classifying neural networks to achieve error rates as low as 0.3\% in constrained experiments which is approaching the human error rate\cite{imagenet}. This paper will compare two papers which use different methods of image classification using convolutional neural networks.
 
-\section{Challenges of Image Recognition}
+\section{Challenges of Image Classification}
 
+As previously stated, image recognition is a classically hard problem in computing because there is no way to have a predetermined expected solution to compare an input image to. A bitwise comparison is obviously out of the question, so instead we must use a system that can give us a value of certainty about what category an image is.
 
+\section{Uses of Image Classification}
 
-\section{Uses of Image Recognition}
-
+Image recognition has many practical uses. Large-scale image classification has only recently seen success with the implementation of convolution neural networks, with large companies like Facebook and Alphabet using CNNs to add tags to uploaded images. Other uses of CNNs for image classification include applications in the field of medicine (as described above), as well as many others.
 
 \section{Method}
 Both papers use convolution networks with small but important differences. The number of convolutional, pooling and fully connected layers is varied to try and target specific goals each paper has.
@@ -22,14 +23,27 @@ Both papers use convolution networks with small but important differences. The n
 \subsection{Medical Image Classification with Convolutional Neural Network}
 The first paper "Medical Image Classification with Convolutional Neural Network" uses only a single convolutional layer as there are no large artefacts which might help with image identification, and the images are more texture-like (all the images used are of lungs from the ILD database)\cite{medical}. This also has the effect of avoiding overfitting\cite{medical}. This then feeds in to a pooling layer to further reduce overfitting, which in turn feeds in to 3 fully connected layers.
 
-\subsection{ImageNet Classification with Deep Convolutional Neural Netowrks}
+\subsection{ImageNet Classification with Deep Convolutional Neural Networks}
 The second paper "ImageNet Classification with Deep Convolutional Neural Networks" tries to classify much more general images and so uses five convolutional layers to allow it to identify large structures in the image being analysed\cite{imagenet}. Some of these feed in to max pooling layers to reduce overfitting, and the final 3 layers are fully connected. Several techniques are used to aid learning to time spent training and reduce overfitting, including applying a rectified linear unit function to the output of every learning layer, local response normalisation and overlapping pooling. The sample size of images used for training is also artificially increased by a factor of 2048, and each hidden neuron has a chance to "drop out" in order to force it's neighbours to learn more robust features, again to mitigate the problem of overfitting. 
 
 \section{Benefits}
 
-\section{Limitations}
+Convolutional neural networks are particularly well suited to solving this problem as the convolutional layers allow selection of spectific artefacts e.g. a cat's ear. There is also no need to develop an algorithm to classify an image yourself, as the network is trained by using images that have already been classified. There is also no need to develop a heuristic yourself, as the network is trained on images that have already been classified.
 
-\section{Results}
+\subsection{Medical Image Classification with Convolutional Neural Network}
+
+This paper applies CNNs in a very specific domain which allows the authors to customise it to their needs, in particular they used only a single convolutional layer to select for texture over larger image artefacts. Because of this they were able to achieve results far superior to the next best image classifier\cite{medical}.
+
+\subsection{ImageNet Classification with Deep Convolutional Neural Networks}
+Because of the innovations made in this paper (namely the use of a large dataset as well as several GPUs), the CNN they trained was able to win the ILSVRC-2012 competition with an error rate of 15.3\%, compared to 26.2\% for the next entry\cite{imagenet}. The advances described in the method section allowed the authors to effectively mitigate overfitting as well as generate a large, useful dataset to give much more accurate classification.
+
+\section{Limitations}
+\subsection{Medical Image Classification with Convolutional Neural Network}
+This CNN was to be used for a very specific domain, and as such it is limited to that domain. This limitation is of little concern however, as the CNN proposed is easy to train on new, similar data sets.
+
+\subsection{ImageNet Classification with Deep Convolutional Neural Networks}
+A limitation of the approach used is the amount of time taken to train the CNN, as well as the added complexity of dealing with data that is much more likely to come with overfitting. Other than the training time, the CNN performs remarkably well by all other metrics.
+
 
 \section{Conclusion}
 
