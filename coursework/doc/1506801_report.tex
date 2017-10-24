@@ -7,13 +7,29 @@
 \maketitle
 \newpage
 \section{Introduction}
-Image classification is a difficult problem in computing as it involves the use of fuzzy logic and non-binary comparisons. It is an important problem to solve as it has many uses, from self driving cars recognising other cars on the road to identifying lung abnormalities for diagnosis\cite{medical}. Neural networks are well suited to this task due to their ability to have "shades of grey" when classifying images, and recent advances have allowed image classifying neural networks to achieve error rates as low as 0.3\% in constrained experiments which is approaching the human error rate\cite{imagenet}. This paper will compare two papers which use different methods of image classification using a convolutional neural networks. 
+Image classification is a difficult problem in computing as it involves the use of fuzzy logic and non-binary comparisons. It is an important problem to solve as it has many uses, from self driving cars recognising other cars on the road to identifying lung abnormalities for diagnosis\cite{medical}. Neural networks are well suited to this task due to their ability to have "shades of grey" when classifying images, and recent advances have allowed image classifying neural networks to achieve error rates as low as 0.3\% in constrained experiments which is approaching the human error rate\cite{imagenet}. This paper will compare two papers which use different methods of image classification using a convolutional neural networks.
+
+\section{Challenges of Image Recognition}
+
+
+\section{Uses of Image Recognition}
+
 
 \section{Method}
 Both papers use convolution networks with small but important differences. The number of convolutional, pooling and fully connected layers is varied to try and target specific goals each paper has.
 
 \subsection{Medical Image Classification with Convolutional Neural Network}
-The first paper "Medical Image Classification with Convolutional Neural Network" uses only a single convolutional layer as there are no large artifacts which might help with image identification (all the images used are of lungs)\cite{medical}. This also has the effect of avoiding overfitting\cite{medical}. This then feeds in to a pooling layer to further reduce overfitting, which in turn feeds in to 3 fully connected layers.
+The first paper "Medical Image Classification with Convolutional Neural Network" uses only a single convolutional layer as there are no large artefacts which might help with image identification, and the images are more texture-like (all the images used are of lungs from the ILD database)\cite{medical}. This also has the effect of avoiding overfitting\cite{medical}. This then feeds in to a pooling layer to further reduce overfitting, which in turn feeds in to 3 fully connected layers.
+
+
+\section{Benefits}
+
+\section{Limitations}
+
+\section{Results}
+
+\section{Conclusion}
+
 
 \bibliography{1506801_references}
 \end{document}
