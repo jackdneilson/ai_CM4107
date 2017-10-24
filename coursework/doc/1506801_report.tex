@@ -12,6 +12,7 @@ Image classification is a difficult problem in computing as it involves the use 
 \section{Challenges of Image Recognition}
 
 
+
 \section{Uses of Image Recognition}
 
 
@@ -21,6 +22,8 @@ Both papers use convolution networks with small but important differences. The n
 \subsection{Medical Image Classification with Convolutional Neural Network}
 The first paper "Medical Image Classification with Convolutional Neural Network" uses only a single convolutional layer as there are no large artefacts which might help with image identification, and the images are more texture-like (all the images used are of lungs from the ILD database)\cite{medical}. This also has the effect of avoiding overfitting\cite{medical}. This then feeds in to a pooling layer to further reduce overfitting, which in turn feeds in to 3 fully connected layers.
 
+\subsection{ImageNet Classification with Deep Convolutional Neural Netowrks}
+The second paper "ImageNet Classification with Deep Convolutional Neural Networks" tries to classify much more general images and so uses five convolutional layers to allow it to identify large structures in the image being analysed\cite{imagenet}. Some of these feed in to max pooling layers to reduce overfitting, and the final 3 layers are fully connected. Several techniques are used to aid learning to time spent training and reduce overfitting, including applying a rectified linear unit function to the output of every learning layer, local response normalisation and overlapping pooling. The sample size of images used for training is also artificially increased by a factor of 2048, and each hidden neuron has a chance to "drop out" in order to force it's neighbours to learn more robust features, again to mitigate the problem of overfitting. 
 
 \section{Benefits}
 
