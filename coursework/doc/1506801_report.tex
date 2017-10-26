@@ -1,4 +1,5 @@
 \documentclass{article}
+\usepackage[margin=30mm]{geometry}
 \usepackage{cite}
 \begin{document}
 \title{Convolutional Neural Networks for Image Classification}
@@ -23,22 +24,23 @@ The first paper "Medical Image Classification with Convolutional Neural Network"
 The second paper "ImageNet Classification with Deep Convolutional Neural Networks" tries to classify much more general images and so uses five convolutional layers to allow it to identify large structures in the image being analysed\cite{imagenet}. Some of these feed in to max pooling layers to reduce overfitting, and the final 3 layers are fully connected. Several techniques are used to aid learning to time spent training and reduce overfitting, including applying a rectified linear unit function to the output of every learning layer, local response normalisation and overlapping pooling. The sample size of images used for training is also artificially increased by a factor of 2048, and each hidden neuron has a chance to "drop out" in order to force it's neighbours to learn more robust features, again to mitigate the problem of overfitting. 
 
 \section{Benefits}
-\subsection{Medical Image Classification}
+Convolutional neural networks are particularly well suited to solving this problem as the convolutional layers allow selection of spectific artefacts e.g. a cat's ear. There is also no need to develop an algorithm to classify an image yourself, as the network is trained by using images that have already been classified.
+
+\subsection{Medical Image Classification with Convolutional Neural Network}
 This paper applies CNNs in a very specific domain which allows the authors to customise it to their needs, in particular they used only a single convolutional layer to select for texture over larger image artefacts. Because of this they were able to achieve results far superior to the next best image classifier\cite{medical}.
 
-\subsection{ImageNet Classification}
-The advances described in the method section allowed the authors to effectively mitigate overfitting as well as generate a large, useful dataset to give much more accurate classification.
+\subsection{ImageNet Classification with Deep Convolutional Neural Networks}
+Because of the innovations made in this paper (namely the use of a large dataset as well as several GPUs), the CNN they trained was able to win the ILSVRC-2012 competition with an error rate of 15.3\%, compared to 26.2\% for the next entry\cite{imagenet}. The advances described in the method section allowed the authors to effectively mitigate overfitting as well as generate a large, useful dataset to give much more accurate classification.
 
 \section{Limitations}
-\subsection{Medical Image Classification}
+\subsection{Medical Image Classification with Convolutional Neural Network}
 This CNN was to be used for a very specific domain (medical imaging), and as such it is limited to that domain. This limitation is of little concern however, as the CNN proposed is easy to train on new, similar data sets.
 
-\subsection{ImageNet Classification}
+\subsection{ImageNet Classification with Deep Convolutional Neural Networks}
 A limitation of the approach used is the amount of time taken to train the CNN, as well as the added complexity of dealing with data that is much more likely to come with overfitting.
 
 \section{Conclusion}
 Image classification is an important problem in AI research, with many practical applications. Significant progress has been made recently with convolutional neural networks, as shown in the two compared papers. There is still much room for improvement with new techniques in training and modelling.
 
-\newpage
 \bibliography{1506801_references}
 \end{document}
