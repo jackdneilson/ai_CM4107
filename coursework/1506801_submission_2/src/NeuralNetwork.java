@@ -1,23 +1,158 @@
-
+import org.apache.commons.math3.linear.*;
 public class NeuralNetwork {
-	public static final int[] DEFAULT_INPUT = {0,1,0,1};
-	public static final int[] DEFAULT_OUTPUT = {1,0,1,0};
+	public static final double[] DEFAULT_INPUT = {0,1,0,1};
+	public static final double[] DEFAULT_OUTPUT = {1,0,1,0};
+	public static final double[] INCOMPLETE_INPUT = {0,0,0,1};
+	public static final double[] NOISY_INPUT = {1,1,0,1};
 	
 	public static void main(String[] args) {
-		int[] input = DEFAULT_INPUT;
-		int[][] synapticMatrix = new int[input.length][input.length];
+		//Question B.1.
+		System.out.println("B.1.");
+		double[] input = DEFAULT_INPUT;
+		double[] output = DEFAULT_OUTPUT;
+		RealMatrix synapticMatrix = generateSynapticMatrix(input, output);
+		
+		double[] generatedOutput = testSynapticMatrix(input, DEFAULT_INPUT, synapticMatrix);
+		System.out.println(synapticMatrix);
+		printArray(DEFAULT_OUTPUT);
+		printArray(generatedOutput);
+		System.out.println();
+		
+		
+		//Question B.2.
+		System.out.println("B.2.");
+		double[] incompleteInput = {0,0,0,1};
+		generatedOutput = testSynapticMatrix(incompleteInput, DEFAULT_INPUT, synapticMatrix);
+		printArray(DEFAULT_OUTPUT);
+		printArray(generatedOutput);
+		System.out.println();
+		
+		//Question B.3.
+		System.out.println("B.3.");
+		double[] noisyInput = {1,1,0,1};
+		generatedOutput = testSynapticMatrix(noisyInput, DEFAULT_INPUT, synapticMatrix);
+		printArray(DEFAULT_OUTPUT);
+		printArray(generatedOutput);
+		System.out.println();
+		
+		//Question B.4.
+		System.out.println("B.4");
+		double[] largeInput = {0,1,0,0,0,1,0,0};
+		double[] largeOutput = {1,0,0,0,1,0,0,0};
+		RealMatrix largeSynapticMatrix = generateSynapticMatrix(largeInput, largeOutput);
+		
+		generatedOutput = testSynapticMatrix(largeInput, largeInput, largeSynapticMatrix);
+		System.out.println(largeSynapticMatrix);
+		printArray(largeOutput);
+		printArray(generatedOutput);
+		System.out.println();
+		
+		//Question B.5.
+		System.out.println("B.5.");
+		double[] distortedInput = {1,1,0,0,0,1,0,0};
+		generatedOutput = testSynapticMatrix(distortedInput, largeInput, largeSynapticMatrix);
+		
+		printArray(largeOutput);
+		printArray(generatedOutput);
+		System.out.println();
+		
+		//Question B.6.
+		/*
+		 * Code below will make the network mistake the first input (largeInput) with the second input.
+		 * Neurons strengthened = 1/8
+		 * Load parameter = (patterns stored / input layer size) = 2/8 = 1/4
+		 */
+		System.out.println("B.6.");
+		double[] secondInput = {0,1,0,0,0,1,0,1};
+		double[] secondOutput = {1,1,0,0,1,0,0,0};
+		
+		trainSynapticMatrix(secondInput, secondOutput, largeSynapticMatrix);
+		generatedOutput = testSynapticMatrix(largeInput, largeInput, largeSynapticMatrix);
+		printArray(generatedOutput);
+		generatedOutput = testSynapticMatrix(secondInput, secondInput, largeSynapticMatrix);
+		printArray(generatedOutput);
+		
+		//Question B.7. is answered in the report.
+		
+	}
+	
+	public static RealMatrix generateSynapticMatrix(double[] input, double[] output) {
+		double[][] matrix = new double[input.length][input.length];
 		for (int i = 0; i < input.length; i++) {
-			for(int j = 0; j < input.length; j++) {
-				if (input[i] == 1 && DEFAULT_OUTPUT[j] == 1) {
-					synapticMatrix[i][j] = 1;
+			for (int j = 0; j < input.length; j++) {
+				if (input[i] == 1 && output[j] == 1) {
+					matrix[i][j] = 1;
 				} else {
-					synapticMatrix[i][j] = 0;
+					matrix[i][j] = 0;
+				}
+			}
+		}
+		
+		return new Array2DRowRealMatrix(matrix);
+	}
+	
+	public static void trainSynapticMatrix(double[] input, double[] output, RealMatrix synapticMatrix) {
+		for (int i = 0; i < synapticMatrix.getRowDimension(); i++) {
+			for (int j = 0; j < synapticMatrix.getColumnDimension(); j++) {
+				if (input[i] == 1 && output[j] == 1) {
+					 synapticMatrix.setEntry(i, j, 1.0);
 				}
 			}
 		}
 	}
 	
-	public static int[] compare(int[] input) {
-		return new int[0];
+	public static double[] testSynapticMatrix(double[] input, double[] originalInput, RealMatrix synapticMatrix) {
+		double threshold;
+		double[] weights = new double[synapticMatrix.getColumn(0).length];
+		for (int i = 0; i < weights.length; i++) {
+			weights[i] = 1;
+		}
+		double inputSum = integrate(weights, input);
+		double originalInputSum = integrate(weights, originalInput);
+		
+		if (inputSum < originalInputSum) {
+			threshold = inputSum;
+		} else {
+			threshold = originalInputSum;
+		}
+		
+		double[] output = new double[input.length];
+		for (int i = 0; i < synapticMatrix.getColumn(0).length; i++) {
+			output[i] = compare(integrate(weights, synapticMatrix.getColumn(i)), threshold);
+		}
+		return output;
 	}
+	
+	
+	public static int integrate(double[] weights, double[] firing) {
+		int total = 0;
+		for (int i = 0; i < firing.length; i++) {
+			total += (firing[i] * weights[i]);
+		}
+		return total;
+	}
+	
+	public static int compare(double sum, double threshold) {
+		if (sum >= threshold) {
+			return 1;
+		} else {
+			return 0;
+		}
+	}
+	
+	public static void printArray(double[] array) {
+		for (int i = 0; i < array.length; i++) {
+			System.out.print(array[i] + " ");
+		}
+		System.out.println();
+	}
+	
+//	public static void questionB1() {
+//		int[] input = DEFAULT_INPUT;
+//		boolean firing =  compare(Integrator.integrate(DEFAULT_INPUT, input), 2);
+//		//boolean firing =  .compare(Integrator.integrate({1,1,1,1}, input), threshold);
+//		System.out.println(firing);
+//	}
+	
+	
 }
