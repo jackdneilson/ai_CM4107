@@ -8,21 +8,18 @@ public class NeuralNetwork {
 	public static void main(String[] args) {
 		//Question B.1.
 		System.out.println("B.1.");
-		double[] input = DEFAULT_INPUT;
-		double[] output = DEFAULT_OUTPUT;
-		RealMatrix synapticMatrix = generateSynapticMatrix(input, output);
+		SynapticMatrix synapticMatrix = new SynapticMatrix(DEFAULT_INPUT, DEFAULT_OUTPUT);
 		
-		double[] generatedOutput = testSynapticMatrix(input, DEFAULT_INPUT, synapticMatrix, output.length);
+		double[] generatedOutput = synapticMatrix.test(DEFAULT_INPUT, DEFAULT_OUTPUT.length);
 		System.out.println(synapticMatrix);
 		printArray(DEFAULT_OUTPUT);
 		printArray(generatedOutput);
 		System.out.println();
-		
-		
+
 		//Question B.2.
 		System.out.println("B.2.");
 		double[] incompleteInput = {0,0,0,1};
-		generatedOutput = testSynapticMatrix(incompleteInput, DEFAULT_INPUT, synapticMatrix, output.length);
+		generatedOutput = synapticMatrix.test(incompleteInput, DEFAULT_OUTPUT.length);
 		printArray(DEFAULT_OUTPUT);
 		printArray(generatedOutput);
 		System.out.println();
@@ -30,18 +27,18 @@ public class NeuralNetwork {
 		//Question B.3.
 		System.out.println("B.3.");
 		double[] noisyInput = {1,1,0,1};
-		generatedOutput = testSynapticMatrix(noisyInput, DEFAULT_INPUT, synapticMatrix, output.length);
+		generatedOutput = synapticMatrix.test(noisyInput, DEFAULT_OUTPUT.length);
 		printArray(DEFAULT_OUTPUT);
 		printArray(generatedOutput);
 		System.out.println();
-		
+
 		//Question B.4.
 		System.out.println("B.4");
-		double[] largeInput = {0,1,0,0,0,1,0,0};
-		double[] largeOutput = {1,0,0,0,1,0,0,0};
-		RealMatrix largeSynapticMatrix = generateSynapticMatrix(largeInput, largeOutput);
+		double[] largeInput = {0,1,0,0,0,1};
+		double[] largeOutput = {1,0,0,0,1,0};
+		SynapticMatrix largeSynapticMatrix = new SynapticMatrix(largeInput, largeOutput);
 		
-		generatedOutput = testSynapticMatrix(largeInput, largeInput, largeSynapticMatrix, largeOutput.length);
+		generatedOutput = largeSynapticMatrix.test(largeInput, largeOutput.length);
 		System.out.println(largeSynapticMatrix);
 		printArray(largeOutput);
 		printArray(generatedOutput);
@@ -49,98 +46,32 @@ public class NeuralNetwork {
 		
 		//Question B.5.
 		System.out.println("B.5.");
-		double[] distortedInput = {1,1,0,0,0,0,0,0};
-		generatedOutput = testSynapticMatrix(distortedInput, largeInput, largeSynapticMatrix, largeOutput.length);
+		double[] distortedInput = {1,1,0,0,0,0};
+		generatedOutput = largeSynapticMatrix.test(largeInput, largeOutput.length);
 		
 		printArray(largeOutput);
 		printArray(generatedOutput);
 		System.out.println();
 		
+		
 		//Question B.6.
 		/*
-		 * Code below will make the network mistake the first input (largeInput) with the second input.
+		 * Code below will make the network mistake the first input (largeInput) with the second input, recalling the wrong output pattern.
 		 * Neurons strengthened = 1/8
 		 * Load parameter = (patterns stored / input layer size) = 2/8 = 1/4
 		 */
 		System.out.println("B.6.");
-		double[] secondInput = {0,1,0,0,0,1,0,1};
-		double[] secondOutput = {1,1,0,0,1,0,0,0};
+		double[] secondInput = {1,1,0,0,0,1};
+		double[] secondOutput = {1,1,0,0,1,0};
 		
-		trainSynapticMatrix(secondInput, secondOutput, largeSynapticMatrix);
-		generatedOutput = testSynapticMatrix(largeInput, largeInput, largeSynapticMatrix, largeOutput.length);
+		largeSynapticMatrix.train(secondInput, secondOutput);
+		generatedOutput = largeSynapticMatrix.test(largeInput, largeOutput.length);
 		printArray(generatedOutput);
-		generatedOutput = testSynapticMatrix(secondInput, secondInput, largeSynapticMatrix, largeOutput.length);
+		generatedOutput = largeSynapticMatrix.test(secondInput, largeOutput.length);
 		printArray(generatedOutput);
 		
 		//Question B.7. is answered in the report.
 		
-	}
-	
-	//Generate a synaptic matrix given input and output
-	public static RealMatrix generateSynapticMatrix(double[] input, double[] output) {
-		double[][] matrix = new double[input.length][output.length];
-		for (int i = 0; i < input.length; i++) {
-			for (int j = 0; j < output.length; j++) {
-				if (input[i] == 1 && output[j] == 1) {
-					matrix[i][j] = 1;
-				} else {
-					matrix[i][j] = 0;
-				}
-			}
-		}
-		
-		return new Array2DRowRealMatrix(matrix);
-	}
-	
-	//Train a given synaptic matrix on the given input and output
-	public static void trainSynapticMatrix(double[] input, double[] output, RealMatrix synapticMatrix) {
-		for (int i = 0; i < synapticMatrix.getRowDimension(); i++) {
-			for (int j = 0; j < synapticMatrix.getColumnDimension(); j++) {
-				if (input[i] == 1 && output[j] == 1) {
-					 synapticMatrix.setEntry(i, j, 1.0);
-				}
-			}
-		}
-	}
-	
-	//Test a given synaptic matrix' recall given input and returns recalled output
-	public static double[] testSynapticMatrix(double[] input, double[] originalInput, RealMatrix synapticMatrix, int outputLength) {
-		double threshold;
-		double[] weights = new double[synapticMatrix.getColumn(0).length];
-		for (int i = 0; i < weights.length; i++) {
-			weights[i] = 1;
-		}
-		double inputSum = integrate(weights, input);
-		double originalInputSum = integrate(weights, originalInput);
-		
-		if (inputSum < originalInputSum) {
-			threshold = inputSum;
-		} else {
-			threshold = originalInputSum;
-		}
-		
-		double[] output = new double[outputLength];
-		for (int i = 0; i < outputLength; i++) {
-			output[i] = compare(integrate(weights, synapticMatrix.getColumn(i)), threshold);
-		}
-		return output;
-	}
-	
-	
-	public static int integrate(double[] weights, double[] firing) {
-		int total = 0;
-		for (int i = 0; i < firing.length; i++) {
-			total += (firing[i] * weights[i]);
-		}
-		return total;
-	}
-	
-	public static int compare(double sum, double threshold) {
-		if (sum >= threshold) {
-			return 1;
-		} else {
-			return 0;
-		}
 	}
 	
 	public static void printArray(double[] array) {
