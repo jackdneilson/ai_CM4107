@@ -12,22 +12,20 @@ public class NeuralNetwork {
 		
 		double[] generatedOutput = synapticMatrix.test(DEFAULT_INPUT, DEFAULT_OUTPUT.length);
 		System.out.println(synapticMatrix);
-		printArray(DEFAULT_OUTPUT);
-		printArray(generatedOutput);
+		System.out.println("Default output: " + printArray(DEFAULT_OUTPUT));
+		System.out.println("Generated output: " + printArray(generatedOutput));
 		System.out.println();
 
 		//Question B.2.
 		System.out.println("B.2.");
-		double[] incompleteInput = {0,0,0,1};
-		generatedOutput = synapticMatrix.test(incompleteInput, DEFAULT_OUTPUT.length);
+		generatedOutput = synapticMatrix.test(INCOMPLETE_INPUT, DEFAULT_OUTPUT.length);
 		printArray(DEFAULT_OUTPUT);
 		printArray(generatedOutput);
 		System.out.println();
 		
 		//Question B.3.
 		System.out.println("B.3.");
-		double[] noisyInput = {1,1,0,1};
-		generatedOutput = synapticMatrix.test(noisyInput, DEFAULT_OUTPUT.length);
+		generatedOutput = synapticMatrix.test(NOISY_INPUT, DEFAULT_OUTPUT.length);
 		printArray(DEFAULT_OUTPUT);
 		printArray(generatedOutput);
 		System.out.println();
@@ -74,10 +72,11 @@ public class NeuralNetwork {
 		
 	}
 	
-	public static void printArray(double[] array) {
+	public static String printArray(double[] array) {
+		String ret = "";
 		for (int i = 0; i < array.length; i++) {
-			System.out.print(array[i] + " ");
+			ret += array[i] + " ";
 		}
-		System.out.println();
+		return ret;
 	}	
 }
