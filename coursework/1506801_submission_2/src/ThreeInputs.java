@@ -14,10 +14,10 @@ public class ThreeInputs {
 		double[] output = {1,0,0,1};
 		
 		double[] collatedInput = collate(input1, input2, input3);
-		RealMatrix synapticMatrix = NeuralNetwork.generateSynapticMatrix(collatedInput, output);
-		double[] generatedOutput = NeuralNetwork.testSynapticMatrix(collatedInput, collatedInput, synapticMatrix, output.length);
-		NeuralNetwork.printArray(generatedOutput);
-		
+		SynapticMatrix synapticMatrix = new SynapticMatrix(collatedInput, output);
+		double[] generatedOutput = synapticMatrix.test(collatedInput, output.length);
+		System.out.println("Default output: " + NeuralNetwork.printArray(output));
+		System.out.println("Generated output: " + NeuralNetwork.printArray(generatedOutput));
 	}
 
 	//Collate 3 inputs in to a single array

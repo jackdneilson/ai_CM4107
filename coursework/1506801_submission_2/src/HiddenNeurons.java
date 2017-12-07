@@ -4,5 +4,4 @@ public class HiddenNeurons {
 		// TODO Auto-generated method stub
 
 	}
-
 }

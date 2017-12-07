@@ -18,9 +18,11 @@ public class SynapticMatrix {
 		generateSynapticMatrix(input, output);
 	}
 	
+	//Returns the recalled output given an input vector
 	public double[] test(double[] input, int outputLength) {
 		double threshold;
 		double[] weights = new double[synapticMatrix.getColumn(0).length];
+		double[] output = null;
 		for (int i = 0; i < weights.length; i++) {
 			weights[i] = 1;
 		}
@@ -35,7 +37,7 @@ public class SynapticMatrix {
 				threshold = originalInputSum;
 			}
 			
-			double[] output = new double[outputLength];
+			output = new double[outputLength];
 			for (int i = 0; i < outputLength; i++) {
 				output[i] = compare(integrate(weights, synapticMatrix.getColumn(i)), threshold);
 			}
@@ -43,7 +45,7 @@ public class SynapticMatrix {
 				return output;
 			}
 		}
-		return null;
+		return output;
 	}
 	
 	//Train an association between an input and an output
@@ -52,8 +54,6 @@ public class SynapticMatrix {
 			for (int j = 0; j < output.length; j++) {
 				if (input[i] == 1 && output[j] == 1) {
 					synapticMatrix.setEntry(i, j, 1);
-				} else {
-					synapticMatrix.setEntry(i, j, 0);
 				}
 			}
 		}
