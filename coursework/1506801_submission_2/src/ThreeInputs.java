@@ -15,8 +15,8 @@ public class ThreeInputs {
 		
 		double[] collatedInput = collate(input1, input2, input3);
 		SynapticMatrix synapticMatrix = new SynapticMatrix(collatedInput, output);
-		double[] generatedOutput = synapticMatrix.test(collatedInput, output.length);
-		System.out.println("Default output: " + NeuralNetwork.printArray(output));
+		double[] generatedOutput = synapticMatrix.test(collatedInput, collatedInput, output.length);
+		System.out.println("Correct output: " + NeuralNetwork.printArray(output));
 		System.out.println("Generated output: " + NeuralNetwork.printArray(generatedOutput));
 	}
 

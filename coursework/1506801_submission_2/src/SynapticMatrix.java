@@ -10,40 +10,41 @@ public class SynapticMatrix {
 	public static final double[] INCOMPLETE_INPUT = {0,0,0,1};
 	public static final double[] NOISY_INPUT = {1,1,0,1};
 	
-	private HashMap<double[], double[]> associationsLearned;
 	private RealMatrix synapticMatrix;
 	
 	public SynapticMatrix(double[] input, double[] output) {
-		this.associationsLearned = new HashMap<double[], double[]>();
 		generateSynapticMatrix(input, output);
 	}
 	
 	//Returns the recalled output given an input vector
-	public double[] test(double[] input, int outputLength) {
+	public double[] test(double[] input, double[] originalInput, int outputLength) {
 		double threshold;
 		double[] weights = new double[synapticMatrix.getColumn(0).length];
-		double[] output = null;
+		double[] output = new double[outputLength];
 		for (int i = 0; i < weights.length; i++) {
 			weights[i] = 1;
 		}
 		double inputSum = integrate(weights, input);
 
-		for (double[] key : associationsLearned.keySet()) {
-			double originalInputSum = integrate(weights, key);
-			
-			if (inputSum < originalInputSum) {
-				threshold = inputSum;
-			} else {
-				threshold = originalInputSum;
-			}
-			
-			output = new double[outputLength];
-			for (int i = 0; i < outputLength; i++) {
-				output[i] = compare(integrate(weights, synapticMatrix.getColumn(i)), threshold);
-			}
-			if (Arrays.equals(output, associationsLearned.get(key))) {
-				return output;
-			}
+		if (inputSum < sumArray(originalInput)) {
+			threshold = inputSum;
+		} else {
+			threshold = sumArray(originalInput);
+		}
+		for (int i = 0; i < outputLength; i++) {
+			output[i] = compare(integrate(weights, synapticMatrix.getColumn(i)), threshold);
+		}
+		return output;
+	}
+	
+	public double[] testSigmoid(double[] input, double[] originalInput, int outputLength) {
+		double[] weights = new double[synapticMatrix.getColumn(0).length];
+		double[] output = new double[outputLength];
+		for (int i = 0; i < weights.length; i++) {
+			weights[i] = 1;
+		}
+		for (int i = 0; i < outputLength; i++) {
+			output[i] = compareSigmoid(integrate(weights, synapticMatrix.getColumn(i)));
 		}
 		return output;
 	}
@@ -57,7 +58,6 @@ public class SynapticMatrix {
 				}
 			}
 		}
-		associationsLearned.put(input, output);
 	}
 	
 	//Instantiate the synaptic matrix on the first set of input
@@ -73,9 +73,9 @@ public class SynapticMatrix {
 			}
 		}
 		this.synapticMatrix = new Array2DRowRealMatrix(matrix);
-		associationsLearned.put(input, output);
 	}
 	
+	//Applies weights to the input vector
 	private double integrate(double[] weights, double[] firing) {
 		int total = 0;
 		for (int i = 0; i < firing.length; i++) {
@@ -90,6 +90,19 @@ public class SynapticMatrix {
 		} else {
 			return 0;
 		}
+	}
+	
+	private double compareSigmoid(double sum) {
+		return 1 / (1 + Math.pow(Math.E, -sum));
+	}
+	
+	//Sums the elements of an array
+	private double sumArray(double[] input) {
+		double sum = 0;
+		for (int i = 0; i < input.length; i++) {
+			sum += input[i];
+		}
+		return sum;
 	}
 	
 	@Override
